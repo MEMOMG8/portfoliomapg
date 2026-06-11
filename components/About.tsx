@@ -16,7 +16,7 @@ export default function About() {
   const inView = useInView(ref, { once: true, margin: "-10%" });
 
   return (
-    <section id="about" ref={ref} className="py-24 px-6 md:px-12 lg:px-24">
+    <section id="about" ref={ref} className="h-screen snap-start snap-always flex flex-col justify-center overflow-hidden pt-20 pb-8 px-6 md:px-12 lg:px-24">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

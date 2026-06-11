@@ -8,9 +8,9 @@ export default function Contact() {
   const inView = useInView(ref, { once: true, margin: "-10%" });
 
   return (
-    <section id="contact" ref={ref} className="py-24 px-6 md:px-12 lg:px-24">
-      <div className="max-w-6xl mx-auto">
-        <div className="h-px bg-gradient-to-r from-transparent via-[#1E1E2E] to-transparent mb-20" />
+    <section id="contact" ref={ref} className="h-screen snap-start snap-always flex flex-col overflow-hidden px-6 md:px-12 lg:px-24">
+      <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col justify-center">
+        <div className="h-px bg-gradient-to-r from-transparent via-[#1E1E2E] to-transparent mb-12" />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -67,6 +67,15 @@ export default function Contact() {
           </div>
         </motion.div>
       </div>
+
+      <footer className="py-6 flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-[#1E1E2E] max-w-6xl mx-auto w-full">
+        <span className="font-mono text-[11px] text-slate-700 tracking-wide">
+          © 2026 Manuel Perez Gil
+        </span>
+        <span className="font-mono text-[11px] text-slate-700 tracking-wide">
+          Built with Next.js · Deployed on AWS
+        </span>
+      </footer>
     </section>
   );
 }

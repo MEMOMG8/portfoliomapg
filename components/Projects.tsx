@@ -14,7 +14,7 @@ const GitHubIcon = ({ size = 15 }: { size?: number }) => (
 function ProjectPreview({ project }: { project: Project }) {
   if (project.image) {
     return (
-      <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-[#14141F] mb-4 shrink-0">
+      <div className="relative w-full aspect-[16/7] rounded-xl overflow-hidden bg-[#14141F] mb-3 shrink-0">
         <Image
           src={project.image}
           alt={`${project.title} screenshot`}
@@ -27,7 +27,7 @@ function ProjectPreview({ project }: { project: Project }) {
     );
   }
   return (
-    <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-4 shrink-0 bg-gradient-to-br from-indigo-950/40 via-[#14141F] to-violet-950/30 border border-[#1E1E2E] flex items-center justify-center">
+    <div className="relative w-full aspect-[16/7] rounded-xl overflow-hidden mb-3 shrink-0 bg-gradient-to-br from-indigo-950/40 via-[#14141F] to-violet-950/30 border border-[#1E1E2E] flex items-center justify-center">
       <span className="font-mono text-xs text-slate-700 tracking-widest uppercase">
         {project.title}
       </span>
@@ -216,20 +216,20 @@ export default function Projects() {
   const [selected, setSelected] = useState<Project | null>(null);
 
   return (
-    <section id="projects" className="py-24 px-6 md:px-12 lg:px-24">
+    <section id="projects" className="h-screen snap-start snap-always overflow-hidden pt-20 pb-4 px-6 md:px-12 lg:px-24">
       <div className="max-w-6xl mx-auto">
         <motion.div
           ref={headerRef}
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.55 }}
-          className="mb-12"
+          className="mb-5"
         >
           <span className="section-label">Selected Work</span>
           <h2 className="text-3xl md:text-4xl font-bold text-white mt-2">Projects</h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
           {projects.map((p, i) => (
             <ProjectCard key={p.id} project={p} index={i} onClick={() => setSelected(p)} />
           ))}
