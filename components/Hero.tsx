@@ -140,6 +140,16 @@ export default function Hero() {
         </motion.p>
 
         <motion.div variants={item} className="flex flex-wrap gap-3">
+          <a
+            href="/Manuel_Perez_Gil_Resume_SWE.pdf"
+            download="Manuel_Perez_Gil_Resume_SWE.pdf"
+            className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg border border-indigo-500 bg-indigo-600 text-white hover:bg-indigo-500 transition-colors duration-200 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5" />
+            </svg>
+            Download Résumé
+          </a>
           {SOCIAL.map((s) => (
             <a
               key={s.href}
