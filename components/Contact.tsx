@@ -23,7 +23,7 @@ export default function Contact() {
             Let&apos;s build something together
           </h2>
           <p className="text-slate-400 leading-relaxed">
-            Open to SWE internships, cloud and AI roles, and interesting research problems. If you
+            Open to full-time SWE roles, cloud and AI roles, and interesting research problems. If you
             have something in mind, reach out.
           </p>
 
