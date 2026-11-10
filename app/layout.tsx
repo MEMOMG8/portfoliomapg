@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
-import { Literata } from "next/font/google";
-import "./portfolio.css";
+import { Inter, JetBrains_Mono } from "next/font/google";
+import "./globals.css";
 
-const literata = Literata({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-literata",
+  variable: "--font-inter",
   display: "swap",
 });
 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Manuel Perez Gil — Software Engineer",
@@ -25,8 +30,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={literata.variable}>
-      <body>{children}</body>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+      <body className="font-sans">{children}</body>
     </html>
   );
 }

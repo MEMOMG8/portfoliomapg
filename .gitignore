@@ -24,7 +24,3 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
-
-# Local design review artifacts
-.taste-skill/
-*.tsbuildinfo
