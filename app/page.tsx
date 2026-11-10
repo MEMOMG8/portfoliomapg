@@ -7,6 +7,8 @@ import Experience from "@/components/Experience";
 import Skills from "@/components/Skills";
 import Certifications from "@/components/Certifications";
 import Contact from "@/components/Contact";
+import SystemStory from "@/components/higgsfield/SystemStory";
+import EngineeringDetails from "@/components/EngineeringDetails";
 
 export default function Home() {
   return (
@@ -14,8 +16,10 @@ export default function Home() {
       <Navbar />
       <SocialSidebar />
       <Hero />
+      <SystemStory />
       <About />
       <Projects />
+      <EngineeringDetails />
       <Experience />
       <Skills />
       <Certifications />

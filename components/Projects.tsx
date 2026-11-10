@@ -17,7 +17,7 @@ function ProjectPreview({ project }: { project: Project }) {
       <div className="relative w-full aspect-[16/7] rounded-xl overflow-hidden bg-[#14141F] mb-3 shrink-0">
         <Image
           src={project.image}
-          alt={`${project.title} screenshot`}
+          alt={`${project.title} ${project.image === project.artwork ? "concept artwork" : "screenshot"}`}
           fill
           className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
           sizes="(max-width: 768px) 100vw, 50vw"
@@ -76,7 +76,7 @@ function Modal({ project, onClose }: { project: Project; onClose: () => void }) 
           <div className="relative w-full aspect-video overflow-hidden rounded-t-2xl bg-[#14141F]">
             <Image
               src={project.image}
-              alt={`${project.title} screenshot`}
+              alt={`${project.title} ${project.image === project.artwork ? "concept artwork" : "screenshot"}`}
               fill
               className="object-cover object-top"
               sizes="580px"
@@ -127,6 +127,14 @@ function Modal({ project, onClose }: { project: Project; onClose: () => void }) 
               ))}
             </ul>
           </div>
+
+          {project.artwork && <figure className="mb-8">
+            <p className="section-label mb-3">Concept artwork</p>
+            {project.artwork !== project.image && <div className="relative aspect-video rounded-xl overflow-hidden border border-[#1E1E2E] mb-3">
+              <Image src={project.artwork} alt={`${project.title} concept artwork`} fill className="object-contain" sizes="580px" />
+            </div>}
+            <figcaption className="text-slate-500 text-xs leading-relaxed">A visual concept for this project. The implementation and stack are described above.</figcaption>
+          </figure>}
 
           <div className="flex flex-col sm:flex-row gap-3">
             <a

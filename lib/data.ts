@@ -6,6 +6,7 @@ export type Project = {
   metrics: string[];
   github: string;
   image?: string;
+  artwork?: string;
   paper?: string;
 };
 
@@ -43,6 +44,7 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/MEMOMG8",
     image: "/images/cloudmetricsone.png",
+    artwork: "/images/higgsfield/cloud-concept.webp",
   },
   {
     id: "rag-assistant",
@@ -57,6 +59,7 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/MEMOMG8",
     image: "/images/rag-national-parks.jpg",
+    artwork: "/images/higgsfield/rag-concept.webp",
   },
   {
     id: "scivis",
@@ -72,11 +75,14 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/MEMOMG8",
     image: "/images/scivis.png",
+    artwork: "/images/higgsfield/scivis-concept.webp",
     paper: "/scivis-paper.docx",
   },
   {
     id: "anylang",
     title: "AnyLang Multilingual Chat",
+    image: "/images/higgsfield/chat-concept.webp",
+    artwork: "/images/higgsfield/chat-concept.webp",
     description:
       "Real-time multilingual messaging demanded sub-100ms delivery with end-to-end security. WebSocket connections via Socket.IO eliminate polling overhead; JWT tokens and AES-256 encryption secure every session from auth through delivery. The 3-column UI — rooms, chat, members — scales cleanly from mobile to desktop.",
     stack: ["Next.js", "React", "Node.js", "Socket.IO", "MongoDB", "JWT"],
