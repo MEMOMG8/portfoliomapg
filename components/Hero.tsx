@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import HeroBackground from "./HeroBackground";
 
 const ROLES = ["Software Engineer", "Cloud Engineer", "AI Engineer"];
 
@@ -85,7 +86,7 @@ export default function Hero() {
       className="relative h-screen snap-start snap-always flex flex-col justify-center pt-16 px-6 md:px-12 lg:px-24 overflow-hidden"
       aria-label="Introduction"
     >
-      <div className="absolute inset-0 grid-bg pointer-events-none" />
+      <HeroBackground />
 
       <div
         className="absolute inset-0 pointer-events-none"
