@@ -1,0 +1,100 @@
+:root {
+  --section-blue: #004578;
+  --section-light: #eff6fc;
+  --section-surface: var(--section-light);
+  --section-ink: var(--section-blue);
+}
+
+main > section:nth-of-type(even),
+[data-dark-section="true"] {
+  --section-surface: var(--section-blue);
+  --section-ink: #fff;
+}
+
+html, body, main, main > section, main > header {
+  background-color: var(--section-surface) !important;
+  color: var(--section-ink) !important;
+}
+
+main > header {
+  border-color: var(--section-ink);
+}
+
+main > section *, main > header *, main > aside * {
+  color: var(--section-ink) !important;
+  border-color: var(--section-ink) !important;
+  --tw-ring-color: var(--section-ink);
+  --tw-ring-offset-color: var(--section-surface);
+}
+
+main > aside a {
+  background-color: var(--section-surface);
+}
+
+/* Replace existing colored surfaces without changing their geometry. */
+main > section :where(:is([class^="bg-"], [class*=" bg-"]):not([class*="bg-clip-text"]):not([class*="bg-gradient"]):not([class*="bg-transparent"])) {
+  background-color: var(--section-surface) !important;
+}
+
+main > section :is(.w-px, .w-1, .typewriter-cursor, .hero-grid-pulse),
+main > aside .w-px,
+main > section :is([class~="bg-indigo-500"], [class~="bg-indigo-400"]) {
+  background: var(--section-ink) !important;
+}
+
+main > section :is([class*="bg-gradient"], [class*="bg-clip-text"]) {
+  background-image: none !important;
+}
+
+.hero-grid-pulse {
+  box-shadow: 0 0 9px 2px #00457870;
+}
+
+section[aria-label="Introduction"] .grid-bg {
+  background-image:
+    linear-gradient(#00457810 1px, transparent 1px),
+    linear-gradient(90deg, #00457810 1px, transparent 1px);
+}
+
+section[aria-label="Introduction"] [style*="radial-gradient"] {
+  background: none !important;
+}
+
+main > section a[download],
+main > section a[class~="bg-indigo-600"] {
+  background: var(--section-ink) !important;
+  color: var(--section-surface) !important;
+}
+
+main > section a[download] *,
+main > section a[class~="bg-indigo-600"] * {
+  color: inherit !important;
+}
+
+main > section .fixed > [class*="bg-black"] {
+  background: rgba(0, 69, 120, .8) !important;
+}
+
+main [role="dialog"] {
+  --section-surface: var(--section-light);
+  --section-ink: var(--section-blue);
+  background: var(--section-surface) !important;
+}
+
+main [role="dialog"] button[aria-label="Close"] {
+  background: var(--section-surface) !important;
+}
+
+::selection {
+  background: var(--section-ink);
+  color: var(--section-surface);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--section-light);
+}
+
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:hover {
+  background: var(--section-blue);
+}
