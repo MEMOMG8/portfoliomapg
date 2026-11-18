@@ -1,264 +1,78 @@
-"use client";
-
-import { useRef, useState, useEffect } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import { projects, type Project } from "@/lib/data";
-
-const GitHubIcon = ({ size = 15 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.09.682-.218.682-.484 0-.236-.009-.866-.013-1.699-2.782.603-3.369-1.34-3.369-1.34-.454-1.157-1.11-1.465-1.11-1.465-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.268 2.75 1.026A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.026 2.747-1.026.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .269.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
-  </svg>
-);
-
-function ProjectPreview({ project }: { project: Project }) {
-  if (project.image) {
-    return (
-      <div className="relative w-full aspect-[16/7] rounded-xl overflow-hidden bg-[#14141F] mb-3 shrink-0">
-        <Image
-          src={project.image}
-          alt={`${project.title} ${project.image === project.artwork ? "concept artwork" : "screenshot"}`}
-          fill
-          className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
-          sizes="(max-width: 768px) 100vw, 50vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F17]/50 to-transparent" />
-      </div>
-    );
-  }
-  return (
-    <div className="relative w-full aspect-[16/7] rounded-xl overflow-hidden mb-3 shrink-0 bg-gradient-to-br from-indigo-950/40 via-[#14141F] to-violet-950/30 border border-[#1E1E2E] flex items-center justify-center">
-      <span className="font-mono text-xs text-slate-700 tracking-widest uppercase">
-        {project.title}
-      </span>
-    </div>
-  );
+'use client';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { featuredProjects, showcaseProjects, projectRepository, type ShowcaseProject } from '@/lib/showcase';
+import LaptopMedia, { type LaptopHandle } from './LaptopMedia';
+import ProjectArtwork from './ProjectArtwork';
+import './project-showcase.css';
+const AREAS=['All','AI & ML','Web & backend','Cloud','Desktop','Data'];
+const technologies=Array.from(new Set(showcaseProjects.flatMap(p=>p.tech))).sort();
+const featureTechnologies=Array.from(new Set(featuredProjects.flatMap(p=>p.tech))).sort();
+function ProjectLinks({project}:{project:ShowcaseProject}) {
+  const repo=projectRepository(project);
+  return <div className="mp-actions">{project.demo&&<a href={project.demo} target="_blank" rel="noopener noreferrer">Visit ↗</a>}{repo&&<a href={repo} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}{project.id==='scivis'&&<a href="/scivis-paper.docx" download>Download paper ↓</a>}</div>;
 }
-
-function Modal({ project, onClose }: { project: Project; onClose: () => void }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = prev;
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [onClose]);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
-      onClick={onClose}
-    >
-      <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96, y: 16 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.96, y: 16 }}
-        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[#1E1E2E] bg-[#0F0F17]"
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-      >
-        {/* Preview image at top of modal */}
-        {project.image && (
-          <div className="relative w-full aspect-video overflow-hidden rounded-t-2xl bg-[#14141F]">
-            <Image
-              src={project.image}
-              alt={`${project.title} ${project.image === project.artwork ? "concept artwork" : "screenshot"}`}
-              fill
-              className="object-cover object-top"
-              sizes="580px"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F17] via-transparent to-transparent" />
-          </div>
-        )}
-
-        <div className="p-6 sm:p-8">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 w-8 h-8 rounded-lg flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-            aria-label="Close"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          </button>
-
-          <h3 id="modal-title" className="text-xl font-bold text-white mb-4 pr-8">
-            {project.title}
-          </h3>
-
-          <p className="text-slate-400 text-sm leading-relaxed mb-6">{project.description}</p>
-
-          <div className="mb-6">
-            <p className="section-label mb-3">Stack</p>
-            <div className="flex flex-wrap gap-1.5">
-              {project.stack.map((tag) => (
-                <span
-                  key={tag}
-                  className="font-mono text-[10.5px] px-2.5 py-1 rounded-md bg-indigo-950/50 text-indigo-300/90 border border-indigo-800/30"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="mb-8">
-            <p className="section-label mb-3">Highlights</p>
-            <ul className="space-y-2">
-              {project.metrics.map((m) => (
-                <li key={m} className="flex items-start gap-2.5">
-                  <span className="text-emerald-500 text-xs mt-0.5 shrink-0">▸</span>
-                  <span className="font-mono text-[11px] text-emerald-400/90 leading-relaxed">{m}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {project.artwork && <figure className="mb-8">
-            <p className="section-label mb-3">Concept artwork</p>
-            {project.artwork !== project.image && <div className="relative aspect-video rounded-xl overflow-hidden border border-[#1E1E2E] mb-3">
-              <Image src={project.artwork} alt={`${project.title} concept artwork`} fill className="object-contain" sizes="580px" />
-            </div>}
-            <figcaption className="text-slate-500 text-xs leading-relaxed">A visual concept for this project. The implementation and stack are described above.</figcaption>
-          </figure>}
-
-          <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2.5 flex-1 py-3 rounded-xl border border-[#1E1E2E] bg-[#14141F] text-slate-300 hover:text-white hover:border-indigo-500/30 hover:bg-indigo-950/20 transition-all duration-200 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-            >
-              <GitHubIcon />
-              View on GitHub
-            </a>
-            {project.paper && (
-              <a
-                href={project.paper}
-                download
-                className="flex items-center justify-center gap-2.5 flex-1 py-3 rounded-xl border border-indigo-800/40 bg-indigo-950/30 text-indigo-300 hover:text-indigo-200 hover:bg-indigo-950/50 transition-all duration-200 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-                Download Paper
-              </a>
-            )}
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-function ProjectCard({
-  project,
-  index,
-  onClick,
-}: {
-  project: Project;
-  index: number;
-  onClick: () => void;
-}) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-8%" });
-
-  return (
-    <motion.button
-      ref={ref}
-      initial={{ opacity: 0, y: 28 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay: index * 0.09, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ boxShadow: "0 0 32px -8px rgba(99,102,241,0.2)" }}
-      onClick={onClick}
-      className="group relative flex flex-col text-left p-5 rounded-2xl border border-[#1E1E2E] bg-[#0F0F17] hover:border-indigo-500/25 transition-colors duration-300 cursor-pointer w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-    >
-      <ProjectPreview project={project} />
-
-      <div className="flex items-start justify-between gap-3 mb-2">
-        <h3 className="text-white font-semibold text-base">{project.title}</h3>
-        <div className="text-slate-700 group-hover:text-indigo-400 transition-colors duration-200 shrink-0 mt-0.5" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M7 17L17 7M17 7H7M17 7v10" />
-          </svg>
-        </div>
-      </div>
-
-      <p className="text-slate-400 text-sm leading-relaxed mb-4 line-clamp-2">
-        {project.description}
-      </p>
-
-      <div className="flex flex-wrap gap-1.5 mt-auto">
-        {project.stack.map((tag) => (
-          <span
-            key={tag}
-            className="font-mono text-[10.5px] px-2.5 py-1 rounded-md bg-indigo-950/50 text-indigo-300/90 border border-indigo-800/30"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-    </motion.button>
-  );
-}
-
 export default function Projects() {
-  const headerRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(headerRef, { once: true });
-  const [selected, setSelected] = useState<Project | null>(null);
-
-  return (
-    <section id="projects" className="h-screen snap-start snap-always overflow-hidden pt-20 pb-4 px-6 md:px-12 lg:px-24">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          ref={headerRef}
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.55 }}
-          className="mb-5"
-        >
-          <span className="section-label">Selected Work</span>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mt-2">Projects</h2>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-          {projects.map((p, i) => (
-            <ProjectCard key={p.id} project={p} index={i} onClick={() => setSelected(p)} />
-          ))}
-        </div>
-
-        <div className="flex justify-center">
-          <a
-            href="https://github.com/MEMOMG8"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl border border-[#1E1E2E] bg-[#0F0F17] text-slate-400 hover:text-white hover:border-indigo-500/30 transition-all duration-200 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-          >
-            <GitHubIcon size={14} />
-            Visit My GitHub
-          </a>
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {selected && <Modal project={selected} onClose={() => setSelected(null)} />}
-      </AnimatePresence>
+  const [platform,setPlatform]=useState(''),[featureTech,setFeatureTech]=useState('');
+  const featured=useMemo(()=>featuredProjects.filter(p=>(!platform||p.platform===platform)&&(!featureTech||p.tech.includes(featureTech))),[platform,featureTech]);
+  const [index,setIndex]=useState(0),[playing,setPlaying]=useState(true),[reduced,setReduced]=useState(false);
+  const [visible,setVisible]=useState(false),[documentVisible,setDocumentVisible]=useState(true);
+  const [area,setArea]=useState('All'),[technology,setTechnology]=useState(''),[expanded,setExpanded]=useState(false);
+  const matches=showcaseProjects.filter(p=>(area==='All'||p.area.includes(area))&&(!technology||p.tech.includes(technology)));
+  const project=featured[index]||featured[0];
+  const stage=useRef<HTMLElement>(null),laptop=useRef<LaptopHandle>(null),progress=useRef<HTMLDivElement>(null);
+  const elapsed=useRef(0),transition=useRef<{manual:boolean}|null>(null),beginRef=useRef<(next:number,manual?:boolean)=>void>(()=>{});
+  const paint=()=>progress.current?.querySelectorAll<HTMLElement>('[data-progress]').forEach((bar,i)=>bar.style.setProperty('--mp-progress',String(i<index?1:i===index?Math.min(elapsed.current/8000,1):0)));
+  const choose=(next:number,manual=true)=>{
+    if(!featured.length)return;const target=(next+featured.length)%featured.length;laptop.current?.reset();elapsed.current=manual?0:8000;
+    if(reduced||target===index){transition.current=null;setIndex(target);paint();return;}
+    transition.current={manual};laptop.current?.start(()=>{setIndex(target);elapsed.current=0;},()=>{transition.current=null;elapsed.current=0;});
+  };
+  beginRef.current=choose;
+  const changeFilter=(which:'platform'|'technology',value:string)=>{laptop.current?.reset();transition.current=null;elapsed.current=0;setIndex(0);if(which==='platform')setPlatform(value);else setFeatureTech(value);};
+  useEffect(()=>{
+    const media=matchMedia('(prefers-reduced-motion: reduce)');
+    const change=()=>{setReduced(media.matches);if(media.matches){setPlaying(false);laptop.current?.reset();transition.current=null;elapsed.current=0;}};
+    change();media.addEventListener('change',change);
+    const visibility=()=>setDocumentVisible(!document.hidden);visibility();document.addEventListener('visibilitychange',visibility);
+    const observer=new IntersectionObserver(([entry])=>setVisible(entry.isIntersecting),{threshold:.15});if(stage.current)observer.observe(stage.current);
+    return()=>{media.removeEventListener('change',change);document.removeEventListener('visibilitychange',visibility);observer.disconnect();};
+  },[]);
+  useEffect(()=>{
+    const active=visible&&documentVisible;if(active&&(playing||transition.current?.manual))laptop.current?.resume();else laptop.current?.pause();
+    if(!active||!playing||reduced||featured.length<2)return;
+    let frame=0,last:number|null=null;
+    const tick=(now:number)=>{if(last!==null&&!transition.current){elapsed.current+=Math.min(now-last,100);if(elapsed.current>=8000){elapsed.current=8000;beginRef.current(index+1,false);}}last=now;paint();frame=requestAnimationFrame(tick);};
+    frame=requestAnimationFrame(tick);return()=>cancelAnimationFrame(frame);
+  // Mutable elapsed and transition refs avoid rendering React on every animation frame.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[playing,visible,documentVisible,reduced,featured,index]);
+  useEffect(()=>{paint();},[index,featured]); // eslint-disable-line react-hooks/exhaustive-deps
+  const togglePlay=()=>{if(playing&&transition.current)transition.current.manual=false;setPlaying(!playing);};
+  return <section id="projects" className="mp-showcase-section" aria-label="Projects and contributions"><div id="mp-project-preview">
+    <section className="mp-featured" ref={stage} data-section-tone="dark" aria-labelledby="mp-projects-title" onFocusCapture={event=>{if(event.target.id!=='mp-play'&&event.target.matches(':focus-visible'))setPlaying(false);}}>
+      <div className="mp-feature-top"><div className="mp-feature-filters">
+        <div className="mp-stepper" role="group" aria-label="Browse featured projects"><button type="button" aria-label="Previous featured project" disabled={featured.length<2} onClick={()=>choose(index-1)}>▲</button><button type="button" aria-label="Next featured project" disabled={featured.length<2} onClick={()=>choose(index+1)}>▼</button></div>
+        <select aria-label="Filter featured projects by platform" value={platform} onChange={e=>changeFilter('platform',e.target.value)}><option value="">Platform</option>{['Web app','Desktop','Data app'].map(value=><option key={value}>{value}</option>)}</select>
+        <select aria-label="Filter featured projects by technology" value={featureTech} onChange={e=>changeFilter('technology',e.target.value)}><option value="">Technology</option>{featureTechnologies.map(value=><option key={value}>{value}</option>)}</select>
+      </div><div className="mp-title-group"><h2 id="mp-projects-title">Projects</h2><span className="mp-counter">{featured.length?index+1:0}/{featured.length}</span></div></div>
+      {project?<div className="mp-feature-grid"><div className="mp-feature-copy" aria-live={playing?'off':'polite'}>
+        <h3>{project.name}</h3><div className="mp-tags">{project.tech.slice(0,3).map(tag=><span key={tag}>{tag}</span>)}</div><p>{project.featureDescription}</p>
+        <div className="mp-actions"><a className="mp-primary" href={project.demo||projectRepository(project)} target="_blank" rel="noopener noreferrer">{project.demo?'Visit':'View project'}</a></div>
+      </div><div className="mp-feature-media"><LaptopMedia ref={laptop} project={project}/><p className="mp-caption">{project.name} · {project.image?'Project screenshot':'Voice workflow concept'}</p></div></div>:<div className="mp-empty"><p>No featured projects match these filters.</p><button type="button" className="mp-primary" onClick={()=>{changeFilter('platform','');setFeatureTech('');}}>Clear filters</button></div>}
+      <div className="mp-carousel-footer"><div className="mp-slide-picks" ref={progress} aria-label="Choose a featured project">{featured.map((p,i)=><button type="button" key={p.id} className="mp-pick" data-progress aria-label={`Show ${p.name}`} aria-current={i===index?'true':undefined} onClick={()=>choose(i)}/>)}</div><button id="mp-play" type="button" className="mp-play" disabled={featured.length<2||reduced} aria-label={playing?'Pause automatic slideshow':'Play automatic slideshow'} onClick={togglePlay}>{playing&&!reduced?'Pause':'Play'}</button></div>
     </section>
-  );
+    <section className="mp-explore" data-section-tone="light" aria-labelledby="mp-explore-title">
+      <div className="mp-heading"><h2 id="mp-explore-title">Explore the work.</h2><span className="mp-count" aria-live="polite">{matches.length} projects</span></div>
+      <div className="mp-filterbar"><div className="mp-filters" aria-label="Filter projects by area">{AREAS.map(value=><button type="button" key={value} className="mp-filter" aria-pressed={area===value} onClick={()=>{setArea(value);setExpanded(false);}}>{value}</button>)}</div><label className="mp-techlabel">Technology<select value={technology} onChange={e=>{setTechnology(e.target.value);setExpanded(false);}}><option value="">All technologies</option>{technologies.map(value=><option key={value}>{value}</option>)}</select></label></div>
+      <div className="mp-grid">{(expanded?matches:matches.slice(0,6)).map(p=><article className="mp-project" key={p.id}><div className="mp-thumbnail"><ProjectArtwork project={p}/></div><h3>{p.name}</h3><p>{p.desc}</p><div className="mp-tags">{p.tech.slice(0,3).map(tag=><span key={tag}>{tag}</span>)}</div><details><summary>Project details</summary><div className="mp-details"><p>{p.detail}</p><ProjectLinks project={p}/></div></details></article>)}{matches.length===0&&<p className="mp-empty">No projects match these filters. Choose another area or technology.</p>}</div>
+      {matches.length>6&&<div className="mp-more-row"><button type="button" className="mp-more" aria-expanded={expanded} onClick={()=>setExpanded(!expanded)}>{expanded?'Show fewer projects ↑':`View all ${matches.length} projects ↓`}</button></div>}
+    </section>
+    <section className="mp-contributions" data-section-tone="dark" aria-labelledby="mp-contributions-title">
+      <div className="mp-heading"><h2 id="mp-contributions-title">Contributions.</h2><p>Features, fixes and tests<br/>in existing codebases.</p></div><div className="mp-contribution-grid">
+        <article className="mp-contribution"><h3>CineLog</h3><p>A watchlist feature with duplicate protection, visibility settings and tests.</p><a href="https://github.com/MEMOMG8/ai201-project6-cinelog-starter/tree/feature/watchlist" target="_blank" rel="noopener noreferrer">View contribution ↗</a></article>
+        <article className="mp-contribution"><h3>Mixtape</h3><p>Fixes for missing playlist tracks, rating notifications and listening streaks.</p><a href="https://github.com/MEMOMG8/ai201-project5-mixtape-starter/tree/bugfix/mixtape" target="_blank" rel="noopener noreferrer">View contribution ↗</a></article>
+        <article className="mp-contribution"><h3>PathReview</h3><p>Async mock corrections with documented reproduction and review-service tests.</p><a href="https://github.com/MEMOMG8/pathreview/tree/fix/158-review-service-async-mocks" target="_blank" rel="noopener noreferrer">View contribution ↗</a></article>
+      </div>
+    </section>
+  </div></section>;
 }

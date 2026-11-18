@@ -1,0 +1,322 @@
+[
+  {
+    "id": "pipeline",
+    "name": "Pipeline Sentinel",
+    "short": "Pipeline",
+    "repo": "pipeline-sentinel",
+    "area": [
+      "Web & backend",
+      "Cloud"
+    ],
+    "tech": [
+      "Java",
+      "Spring Boot",
+      "Next.js",
+      "PostgreSQL",
+      "AWS"
+    ],
+    "desc": "Validate CSV data before downstream systems depend on it.",
+    "detail": "Validation runs, issue reporting and quarantined rows in a persistent audit trail. Published demo.",
+    "demo": "https://pipeline.manuelperezgil.com",
+    "image": "/projects/screens/pipeline.webp",
+    "caption": "Live dashboard · CSV validation",
+    "path": "Upload → Validate → Review",
+    "featureDescription": "A data quality platform that checks CSV files before they reach downstream systems. Upload a batch, inspect validation issues and review quarantined rows, with a persistent history of every run.",
+    "platform": "Web app"
+  },
+  {
+    "id": "livequiz",
+    "name": "LiveQuiz",
+    "short": "LiveQuiz",
+    "repo": "livequiz-app",
+    "area": [
+      "Web & backend",
+      "AI & ML",
+      "Cloud"
+    ],
+    "tech": [
+      "Next.js",
+      "TypeScript",
+      "AWS"
+    ],
+    "desc": "AI-generated trivia. Shared rooms. A live race to the leaderboard.",
+    "detail": "Multiplayer trivia with AI questions, DynamoDB and WebSocket updates. Published web demo.",
+    "demo": "https://livequiz-app-psi.vercel.app",
+    "image": "/projects/screens/livequiz.webp",
+    "caption": "Live application · Multiplayer trivia",
+    "path": "Topic → Questions → Play",
+    "featureDescription": "A multiplayer trivia experience that turns a topic into AI-generated questions. Create a room, share its code and play together, with answers and scores updated in real time.",
+    "platform": "Web app"
+  },
+  {
+    "id": "deskpilot",
+    "name": "DeskPilot",
+    "short": "DeskPilot",
+    "repo": "deskpilot",
+    "area": [
+      "Desktop",
+      "AI & ML"
+    ],
+    "tech": [
+      "Python",
+      "Whisper",
+      "Windows"
+    ],
+    "desc": "A voice assistant for the things you do every day on Windows.",
+    "detail": "Voice commands, local tools, media controls, notes and reminders. Desktop demo; public installer release still has pending checks.",
+    "caption": "Voice workflow · Concept illustration",
+    "path": "Listen → Understand → Act",
+    "art": "Hey, DeskPilot.",
+    "featureDescription": "A voice assistant for everyday work on Windows. Open applications, control music, save notes and set reminders through spoken commands, with local tools and optional AI assistance.",
+    "platform": "Desktop"
+  },
+  {
+    "id": "scivis",
+    "name": "IEEE SciVis",
+    "short": "SciVis",
+    "repo": "SciVis",
+    "area": [
+      "Data"
+    ],
+    "tech": [
+      "Python",
+      "Plotly",
+      "Dash",
+      "Pandas"
+    ],
+    "desc": "Explore alloy compositions through linked, interactive visualizations.",
+    "detail": "Scientific visualization with PCA and linked views. Academic project; an active deployment was not confirmed.",
+    "image": "/projects/screens/scivis.webp",
+    "caption": "Project screenshot · Scientific visualization",
+    "path": "Alloys → PCA → Explore",
+    "featureDescription": "An interactive workspace for exploring alloy compositions. Linked views, principal component analysis and parallel coordinates help reveal patterns across a complex scientific dataset.",
+    "platform": "Data app"
+  },
+  {
+    "id": "movies",
+    "name": "Movie Watchlist",
+    "repo": "movie-watchlist",
+    "area": [
+      "Web & backend"
+    ],
+    "tech": [
+      "JavaScript",
+      "PWA"
+    ],
+    "desc": "Keep your next watch, personal ratings and movie notes in one place.",
+    "detail": "A browser-based movie tracker with search and local storage. Web deployment available.",
+    "image": "/projects/screens/movies.webp",
+    "demo": "https://movie-watchlist-sigma-three.vercel.app",
+    "path": "Find → Watch → Rate"
+  },
+  {
+    "id": "snakedocs",
+    "name": "SnakeDocs",
+    "repo": null,
+    "area": [
+      "Web & backend"
+    ],
+    "tech": [
+      "JavaScript",
+      "AWS"
+    ],
+    "desc": "Learn Python through 32 lessons, quick checks and saved progress.",
+    "detail": "An interactive learning guide covering Python fundamentals, data structures and interview patterns.",
+    "image": "/projects/screens/snakedocs.webp",
+    "demo": "https://snakedocs.com",
+    "path": "Read → Practice → Progress"
+  },
+  {
+    "id": "cloud",
+    "name": "CloudMetrics",
+    "repo": "cloud-metrics-dashboard",
+    "area": [
+      "Cloud"
+    ],
+    "tech": [
+      "Python",
+      "JavaScript",
+      "AWS"
+    ],
+    "desc": "An AWS dashboard connecting serverless APIs and operational metrics.",
+    "detail": "Lambda, API Gateway, CloudWatch and S3. System metrics include simulated demo values.",
+    "image": "/projects/screens/cloud.webp",
+    "demo": "http://manuelp-metrics-dashboard.s3-website-us-east-1.amazonaws.com",
+    "path": "Collect → Monitor → Observe"
+  },
+  {
+    "id": "parks",
+    "name": "RAG National Parks",
+    "repo": "rag-national-parks",
+    "area": [
+      "AI & ML",
+      "Data"
+    ],
+    "tech": [
+      "Python",
+      "Chroma",
+      "Gradio"
+    ],
+    "desc": "Ask about national parks with answers grounded in retrieved documents.",
+    "detail": "Retrieval-augmented generation over park information using embeddings, Chroma and an LLM.",
+    "image": "/projects/screens/parks.webp",
+    "path": "Question → Retrieve → Answer"
+  },
+  {
+    "id": "documents",
+    "name": "RAG Document Assistant",
+    "repo": "rag-document-assistant",
+    "area": [
+      "AI & ML"
+    ],
+    "tech": [
+      "Python",
+      "FastAPI",
+      "Streamlit",
+      "Chroma"
+    ],
+    "desc": "Turn PDF and text documents into a searchable knowledge source.",
+    "detail": "Document ingestion and semantic retrieval with a Streamlit interface and FastAPI backend.",
+    "path": "PDF / TXT → Search → Answer",
+    "art": "Your documents.\nConnected."
+  },
+  {
+    "id": "resume",
+    "name": "AI Resume Analyzer",
+    "repo": "ai-resume-analyzer",
+    "area": [
+      "Web & backend",
+      "Data"
+    ],
+    "tech": [
+      "Python",
+      "FastAPI",
+      "React"
+    ],
+    "desc": "Compare résumé skills and identify keyword matches and gaps.",
+    "detail": "React and FastAPI application. Current scoring uses rules and keyword matching rather than an LLM.",
+    "path": "Résumé → Match → Review",
+    "art": "Skills, in focus."
+  },
+  {
+    "id": "recommend",
+    "name": "Movie Recommender",
+    "repo": "Machine_Learning_Project",
+    "area": [
+      "AI & ML",
+      "Data"
+    ],
+    "tech": [
+      "Python",
+      "Streamlit",
+      "Pandas"
+    ],
+    "desc": "Find your next movie through content-based similarity.",
+    "detail": "A recommendation pipeline with cosine similarity, TMDB data and a Streamlit interface.",
+    "path": "Movie → Similarity → Picks",
+    "art": "One film.\nMore possibilities."
+  },
+  {
+    "id": "soccer",
+    "name": "SoccerHub NL2SQL",
+    "repo": "soccerhub-nl2sql",
+    "area": [
+      "AI & ML",
+      "Data"
+    ],
+    "tech": [
+      "Python",
+      "MySQL",
+      "LangChain"
+    ],
+    "desc": "Ask football questions in natural language. Query structured data.",
+    "detail": "An academic NL-to-SQL project with model comparisons, expected answers and evaluation results.",
+    "path": "Question → SQL → Results",
+    "art": "Football.\nIn your own words."
+  },
+  {
+    "id": "fitfindr",
+    "name": "FitFindr",
+    "repo": "ai201-project2-fitfindr-starter",
+    "area": [
+      "AI & ML"
+    ],
+    "tech": [
+      "Python",
+      "Gradio"
+    ],
+    "desc": "Find clothing by size, budget and preferences, then build an outfit.",
+    "detail": "Course project with example listings, query parsing, outfit suggestions and fit cards.",
+    "path": "Preferences → Find → Outfit",
+    "art": "A better fit."
+  },
+  {
+    "id": "provenance",
+    "name": "Provenance Guard",
+    "repo": "ai201-project4-provenance-guard",
+    "area": [
+      "AI & ML",
+      "Web & backend"
+    ],
+    "tech": [
+      "Python",
+      "Groq"
+    ],
+    "desc": "Explore text attribution with recorded decisions and an appeal flow.",
+    "detail": "Experimental academic API combining LLM signals and stylometric heuristics. Not a validated authorship detector.",
+    "path": "Text → Signals → Review",
+    "art": "Attribution.\nWith context."
+  },
+  {
+    "id": "anylang",
+    "name": "AnyTongue / AnyLang",
+    "repo": "AnyTongueBackEnd",
+    "area": [
+      "Web & backend",
+      "AI & ML"
+    ],
+    "tech": [
+      "Node.js",
+      "MongoDB",
+      "Socket.io",
+      "Gemini"
+    ],
+    "desc": "A multilingual chat backend with translation and real-time messaging.",
+    "detail": "Backend scope: JWT authentication, Socket.io messaging, translation and encrypted storage. No public frontend was confirmed.",
+    "path": "Message → Translate → Deliver",
+    "art": "Hello.\nHola. Ciao."
+  },
+  {
+    "id": "incident",
+    "name": "IncidentPilot",
+    "repo": "slack-incident-response-agent",
+    "area": [
+      "Web & backend"
+    ],
+    "tech": [
+      "TypeScript",
+      "Node.js",
+      "Slack",
+      "MCP"
+    ],
+    "desc": "Classify Slack alerts and coordinate incident escalation.",
+    "detail": "Prototype using keyword rules and sample incident history, with an MCP escalation flow.",
+    "path": "Alert → Classify → Escalate",
+    "art": "From alert\nto action."
+  },
+  {
+    "id": "coding",
+    "name": "Coding Projects",
+    "repo": "Coding-Projects",
+    "area": [
+      "Desktop"
+    ],
+    "tech": [
+      "Python"
+    ],
+    "desc": "Small Python programs built around logic, input and interaction.",
+    "detail": "A collection of console projects: calculator, adventure, quiz, number guessing and rock-paper-scissors.",
+    "path": "Input → Logic → Output",
+    "art": "Small programs.\nSolid foundations."
+  }
+]

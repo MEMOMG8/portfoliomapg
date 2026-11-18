@@ -5,6 +5,7 @@ import { useEffect } from "react";
 export default function SectionTheme() {
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll("main > section"));
+    const projectSections = Array.from(document.querySelectorAll<HTMLElement>("#projects [data-section-tone]"));
     const header = document.querySelector<HTMLElement>("main > header");
     const sidebar = document.querySelector<HTMLElement>("main > aside");
     let frame = 0;
@@ -12,6 +13,7 @@ export default function SectionTheme() {
     const update = () => {
       frame = 0;
       const bounds = sections.map(section => section.getBoundingClientRect());
+      const projectBounds = projectSections.map(section => section.getBoundingClientRect());
       const surfaces = [
         { element: header, y: 32 },
         { element: sidebar, y: window.innerHeight / 2 },
@@ -19,7 +21,10 @@ export default function SectionTheme() {
       for (const { element, y } of surfaces) {
         if (!element) continue;
         const index = bounds.findIndex(rect => rect.top <= y && rect.bottom > y);
-        element.dataset.darkSection = String(index >= 0 && index % 2 === 1);
+        const projectIndex = projectBounds.findIndex(rect => rect.top <= y && rect.bottom > y);
+        element.dataset.darkSection = String(projectIndex >= 0
+          ? projectSections[projectIndex].dataset.sectionTone === "dark"
+          : index >= 0 && index % 2 === 1);
       }
     };
     const schedule = () => {
