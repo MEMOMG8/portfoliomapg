@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useRef, useEffect } from "react";
 
 const links = [
   { label: "About", href: "#about" },
@@ -12,26 +11,42 @@ const links = [
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const header = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      if (!header.current) return;
+      const t = reduced.matches ? Number(window.scrollY > 20) : Math.min(window.scrollY / 180, 1);
+      const progress = t * t * (3 - 2 * t);
+      const viewport = document.documentElement.clientWidth;
+      const width = viewport + (Math.min(660, viewport - 32) - viewport) * progress;
+      header.current.style.width = `${width}px`;
+      header.current.style.left = `${(viewport - width) / 2}px`;
+      header.current.style.top = `${12 * progress}px`;
+      header.current.style.borderRadius = `${22 * progress}px`;
+      header.current.style.setProperty('--nav-compact', String(progress));
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    window.addEventListener('pageshow', schedule);
+    reduced.addEventListener('change', schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      window.removeEventListener('pageshow', schedule);
+      reduced.removeEventListener('change', schedule);
+    };
   }, []);
 
   return (
-    <motion.header
-      initial={{ opacity: 0, y: -12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[#0A0A0F]/90 backdrop-blur-md border-b border-[#1E1E2E]"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24 h-16 flex items-center justify-between">
+    <header ref={header} className="portfolio-nav fixed top-0 left-0 z-50">
+      <div className="portfolio-nav-inner max-w-6xl mx-auto h-16 flex items-center justify-between">
         <a
           href="#"
           className="font-mono text-sm text-indigo-400 hover:text-indigo-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded"
@@ -59,6 +74,6 @@ export default function Navbar() {
           Contact
         </a>
       </div>
-    </motion.header>
+    </header>
   );
 }

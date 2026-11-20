@@ -1,7 +1,5 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 
 const tags = [
@@ -12,19 +10,14 @@ const tags = [
 ];
 
 export default function About() {
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-10%" });
-
   return (
-    <section id="about" ref={ref} className="h-screen snap-start snap-always flex flex-col justify-center overflow-hidden pt-20 pb-8 px-6 md:px-12 lg:px-24">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        >
+    <section id="about" className="about-reveal-section" aria-labelledby="about-title">
+      <div className="about-reveal-scene">
+        <div className="about-reveal-panel">
+          <div className="about-reveal-content">
+        <div className="about-reveal-inner max-w-3xl mx-auto">
           <span className="section-label">Who I Am</span>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mt-2 mb-10">About</h2>
+          <h2 id="about-title" className="text-3xl md:text-4xl font-bold text-white mt-2 mb-10">About</h2>
 
           <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-start max-w-3xl">
             {/* Profile photo */}
@@ -83,7 +76,9 @@ export default function About() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
+          </div>
+        </div>
       </div>
     </section>
   );

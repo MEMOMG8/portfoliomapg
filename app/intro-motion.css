@@ -1,0 +1,21 @@
+/* The approved scroll treatment is limited to navigation and the opening About. */
+.portfolio-nav { width:100%; --nav-compact:0; border:1px solid transparent; }
+.portfolio-nav::after { content:""; position:absolute; inset:-1px; border:1px solid currentColor; border-radius:inherit; opacity:calc(var(--nav-compact) * .22); pointer-events:none; }
+.portfolio-nav-inner { --nav-padding:24px; padding-inline:calc(var(--nav-padding) * (1 - var(--nav-compact)) + 20px * var(--nav-compact)); }
+@media(min-width:768px) { .portfolio-nav-inner { --nav-padding:48px; } }
+@media(min-width:1024px) { .portfolio-nav-inner { --nav-padding:96px; } }
+.about-reveal-scene { min-height:100svh; position:relative; }
+.about-reveal-panel { background:var(--section-blue); color:var(--section-light); }
+.about-reveal-content { min-height:100svh; display:flex; align-items:center; padding:100px 24px 48px; }
+.about-reveal-inner { width:100%; }
+@media(min-width:768px) { .about-reveal-content { padding-inline:48px; } }
+@media(min-width:1024px) { .about-reveal-content { padding-inline:96px; } }
+html[data-intro-motion="true"] { scroll-snap-type:none; }
+html[data-intro-motion="true"] main > section[aria-label="Introduction"] { position:sticky; top:0; height:var(--intro-viewport,100svh); margin-bottom:calc(-1 * var(--intro-viewport,100svh)); z-index:0; }
+html[data-intro-motion="true"] #about { position:relative; z-index:1; height:calc(var(--intro-stage,100svh) + var(--intro-travel,160svh)); background:transparent!important; pointer-events:none; }
+html[data-intro-motion="true"] .about-reveal-scene { position:sticky; top:0; height:var(--intro-stage,100svh); min-height:0; }
+html[data-intro-motion="true"] .about-reveal-panel { position:absolute; inset:0; clip-path:inset(var(--intro-top,100svh) var(--intro-side,7.5%) var(--intro-bottom,0px) round var(--intro-radius,30px)); pointer-events:auto; }
+html[data-intro-motion="true"] .about-reveal-content { min-height:0; height:100%; opacity:var(--intro-opacity,0); transform:translateY(var(--intro-offset,30px)) scale(var(--intro-scale,.85)); }
+/* Restore snapping below the opening sequence, without snapping past its frames. */
+html[data-intro-motion="true"][data-intro-past="true"] { scroll-snap-type:y proximity; }
+@media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
